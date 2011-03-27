@@ -1,4 +1,8 @@
-"""Print out the charges for s3 for the last 24 hours by hour."""
+"""
+Print out the charges for s3. The format will change.
+
+Example: python s3charges.py 2011-03-27 2011-03-28 -U username -P password
+"""
 from amazonPrices import pricing
 from check_aws_usage import get_report, PERIODS, FORMATS
 from csv import DictReader
@@ -30,13 +34,26 @@ def sum_usage(organized_results):
   go over the results output from organize_buckets_and_operations and sum the costs.
   """
   for bucket, report_slice in organized_results.items():
-    print "%s:" % bucket
     sorted_dates = sorted(report_slice.iteritems(), key=itemgetter(0))
+    column_headers = []
     for date_str, usage in sorted_dates:
-      print "\t%s: " % date_str
       for usage_name, usage_value in usage.items():
-        print "\t\t%s: $%.6f" % (usage_name, (Decimal(usage_value)/pricing['AmazonS3'][usage_name]['unit']) * pricing['AmazonS3'][usage_name]['price'])
- 
+        if not usage_name in column_headers:
+          column_headers.append(usage_name) 
+    print "| %25s | " % bucket,
+    for column_header in column_headers:
+      print "%25s | "% column_header,
+    print ""
+    for date_str, usage in sorted_dates:
+      print "| %25s | " % date_str,
+      for usage_name in column_headers:
+        if usage_name in usage:
+          print "%25.4f | "  % ((Decimal(usage[usage_name])/pricing['AmazonS3'][usage_name]['unit']) * pricing['AmazonS3'][usage_name]['price']),
+        else:
+          print "%25s | " % ("N/A"),
+      print "" 
+
+
 if __name__ == "__main__":
   USAGE = (
       "Usage: %prog [options] -s SERVICE DATE_FROM DATE_TO\n\n"
@@ -45,7 +62,7 @@ if __name__ == "__main__":
       "\n"
   )
   parser = OptionParser(usage=USAGE)
-  parser.add_option('-p', '--period', dest="period", type="choice", choices=PERIODS, default='hours', metavar="PERIOD", help="Period of report entries")
+  parser.add_option('-p', '--period', dest="period", type="choice", choices=PERIODS, default='days', metavar="PERIOD", help="Period of report entries")
   parser.add_option('-f', '--format', dest="format", type="choice", choices=FORMATS, default='csv', metavar="FORMAT", help="Format of report")
   parser.add_option('-U', '--username', dest="username", metavar="USERNAME", help="Email address for your AWS account")
   parser.add_option('-P', '--password', dest="password", metavar="PASSWORD")
