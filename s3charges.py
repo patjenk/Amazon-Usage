@@ -3,6 +3,7 @@ from amazonPrices import pricing
 from check_aws_usage import get_report, PERIODS, FORMATS
 from csv import DictReader
 from datetime import date
+from decimal import Decimal
 from optparse import OptionParser
 from StringIO import StringIO
 from time import strptime
@@ -32,7 +33,7 @@ def sum_usage(organized_results):
     for date_str, usage in report_slice.items():
       print "\t%s: " % date_str
       for usage_name, usage_value in usage.items():
-        print "\t\t%s: $%.6f" % (usage_name, int(usage_value) * pricing['AmazonS3'][usage_name])
+        print "\t\t%s: $%.6f" % (usage_name, (Decimal(usage_value)/pricing['AmazonS3'][usage_name]['unit']) * pricing['AmazonS3'][usage_name]['price'])
  
 if __name__ == "__main__":
   USAGE = (

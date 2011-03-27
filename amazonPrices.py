@@ -7,14 +7,41 @@ This is very incomplete but right now I just want a rough estimate.
 from decimal import Decimal
 pricing = {
   'AmazonS3': {
-    'DataTransfer-Out-Bytes': Decimal('0.000000000139698386'),
-    'C3DataTransfer-Out-Bytes': Decimal('0.000000000139698386'),
-    'DataTransfer-In-Bytes': Decimal('0.0000000000931322575'),
-    'Requests-Tier1': Decimal('0.00001'),
-    'Requests-Tier2': Decimal('0.000001'),
-    'TimedStorage-ByteHrs': Decimal('0'),
-    'StorageObjectCount': Decimal('0'),
-    'Requests-NoCharge': Decimal('0'),
-    'TimedStorage-RRS-ByteHrs': Decimal('0'),
+    'DataTransfer-Out-Bytes': {
+      'unit': 1073741824,
+      'price': Decimal('0.15'),
+    },
+    'C3DataTransfer-Out-Bytes': { 
+      'unit': 1073741824,
+      'price': Decimal('0.15'),
+    },
+    'DataTransfer-In-Bytes': {
+      'unit': 1073741824,
+      'price': Decimal('0.10'),
+    },
+    'Requests-Tier1': {
+      'unit': 1000, 
+      'price': Decimal('0.01'),
+    },
+    'Requests-Tier2': {
+      'unit': 10000, 
+      'price': Decimal('0.01'),
+    },
+    'TimedStorage-ByteHrs': {
+      'unit': 1,
+      'price': Decimal('0'),
+    },
+    'StorageObjectCount': {
+      'unit': 1,
+      'price': Decimal('0'),
+    },
+    'Requests-NoCharge': {
+      'unit': 1,
+      'price': Decimal('0'),
+    },
+    'TimedStorage-RRS-ByteHrs': {
+      'unit': 1,
+      'price': Decimal('0'),
+    },
   },
 }
