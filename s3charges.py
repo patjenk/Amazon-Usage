@@ -5,6 +5,7 @@ from csv import DictReader
 from datetime import date
 from decimal import Decimal
 from optparse import OptionParser
+from operator import itemgetter
 from StringIO import StringIO
 from time import strptime
 
@@ -30,7 +31,8 @@ def sum_usage(organized_results):
   """
   for bucket, report_slice in organized_results.items():
     print "%s:" % bucket
-    for date_str, usage in report_slice.items():
+    sorted_dates = sorted(report_slice.iteritems(), key=itemgetter(0))
+    for date_str, usage in sorted_dates:
       print "\t%s: " % date_str
       for usage_name, usage_value in usage.items():
         print "\t\t%s: $%.6f" % (usage_name, (Decimal(usage_value)/pricing['AmazonS3'][usage_name]['unit']) * pricing['AmazonS3'][usage_name]['price'])
