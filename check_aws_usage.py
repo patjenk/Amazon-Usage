@@ -112,8 +112,6 @@ def get_report(service, date_from, date_to, username, password, format='csv', pe
     
     # service selector
     print >>sys.stderr, "Selecting service %s..." % service
-    import ipdb
-    ipdb.set_trace()
     br.select_form(name="usageReportForm")
     br["productCode"] = [service]
     resp = br.submit()
@@ -121,7 +119,7 @@ def get_report(service, date_from, date_to, username, password, format='csv', pe
     # report selector
     print >>sys.stderr, "Building report..."
     br.select_form(name="usageReportForm")
-    br["timePeriod"] = ["Custom date range"]
+    br["timePeriod"] = ["aws-portal-custom-date-range"]
     br["startYear"] = [str(date_from.year)]
     br["startMonth"] = [str(date_from.month)]
     br["startDay"] = [str(date_from.day)]
