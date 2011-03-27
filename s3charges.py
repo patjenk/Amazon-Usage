@@ -27,12 +27,12 @@ def sum_usage(organized_results):
   """
   go over the results output from organize_buckets_and_operations and sum the costs.
   """
-  for bucket, report_slice in organized_results:
+  for bucket, report_slice in organized_results.items():
     print "%s:" % bucket
-    for date_str, usage in report_slice:
+    for date_str, usage in report_slice.items():
       print "\t%s: " % date_str
-      for usage_name, usage_value in usage:
-        print "%s: $%.6f" % (usage_name, usage_value * pricing['AmazonS3'][usage_name])
+      for usage_name, usage_value in usage.items():
+        print "\t\t%s: $%.6f" % (usage_name, int(usage_value) * pricing['AmazonS3'][usage_name])
  
 if __name__ == "__main__":
   USAGE = (
@@ -84,6 +84,6 @@ if __name__ == "__main__":
   }
   
   csv_report = get_report(**kwopts)
-  csv_dictreader = DictReader(StringIO(csv_report), delimiter=',', lineterminator="\n")
-  organized_report = organize_buckets_and_operations(DictReader(csv_report))
+  csv_dictreader = DictReader(StringIO(csv_report), delimiter=',', lineterminator="\n", skipinitialspace=True)
+  organized_report = organize_buckets_and_operations(csv_dictreader)
   sum_usage(organized_report)  
