@@ -16,7 +16,7 @@ def organize_buckets_and_operations(csv_dictreader):
   """
   result = dict()
   for row in csv_dictreader:
-    if row['Operation'] != 'GetObject': # Honestly, i don't care what other things costs me.
+    if row['Operation'] == 'GetObject': # Honestly, i don't care what other things costs me.
       if not row['Resource'] in result:
         result[row['Resource']] = {}
       if not row['StartTime'] in result[row['Resource']]:
