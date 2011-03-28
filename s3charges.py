@@ -48,7 +48,9 @@ def sum_usage(organized_results):
       print "| %25s | " % date_str,
       for usage_name in column_headers:
         if usage_name in usage:
-          print "%25.4f | "  % ((Decimal(usage[usage_name])/pricing['AmazonS3'][usage_name]['unit']) * pricing['AmazonS3'][usage_name]['price']),
+          charges = (Decimal(usage[usage_name])/pricing['AmazonS3'][usage_name]['unit']) * pricing['AmazonS3'][usage_name]['price']
+          units = (Decimal(usage[usage_name])/pricing['AmazonS3'][usage_name]['unit'])
+          print "$%-7.4f %10.4f units | "  % (charges, units),
         else:
           print "%25s | " % ("N/A"),
       print "" 
